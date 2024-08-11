@@ -249,7 +249,7 @@ ALTER TABLE StudentsDetails
 ADD FOREIGN KEY (hostel_id) REFERENCES Hostel(hostel_id);
 
 
- -- student details table join fees table
+ -- Student Fee Status
 SELECT 
     sd.student_id,
     sd.Firstname,
@@ -267,8 +267,12 @@ WHERE
     f.status IN ('Unpaid', 'Overdue')
 ORDER BY 
     f.due_date;
-    
-    -- department wise count of student 
+
+
+
+
+
+    --  Department-wise Student Count
     SELECT 
     course AS Department,
     COUNT(*) AS StudentCount
@@ -278,5 +282,4 @@ GROUP BY
     course
 ORDER BY 
     StudentCount DESC, Department;
-
 
