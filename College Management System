@@ -1,21 +1,20 @@
 
-CREATE DATABASE StudentManageSystem;
+CREATE DATABASE Studentdetails;
 
-USE StudentManageSystem;              
+USE Studentdetails;              
 
-CREATE TABLE StudentsDetails (
+CREATE TABLE Studentsdetails (
     student_id INT AUTO_INCREMENT PRIMARY KEY,
     Firstname VARCHAR(100),
     Lastname VARCHAR(100),
     gender ENUM('Male', 'Female'),
     age INT,
     course VARCHAR(50),
-    year_of_study INT,
-    hostel_id INT
+    year_of_study INT
 );
 
 
-INSERT INTO StudentsDetails (Firstname, Lastname, Gender, Age, Course, Year_of_study) 
+INSERT INTO Studentsdetails (Firstname, Lastname, Gender, Age, Course, Year_of_study) 
 VALUES 
 ('Gomathi','Murugan', 'Female', 21, 'Information Technology', 4),
 ('Janarthini','Srinivasan', 'Female', 20, 'Information Technology', 3),
@@ -47,7 +46,7 @@ CREATE TABLE Fees (
     due_date DATE NOT NULL,
     status VARCHAR(20) NOT NULL,
     payment_date DATE,
-    FOREIGN KEY (student_id) REFERENCES StudentsDetails(student_id)
+    FOREIGN KEY (student_id) REFERENCES Studentsdetails(student_id)
 );
 
 INSERT INTO Fees (student_id, amount, due_date, status, payment_date) VALUES
@@ -182,7 +181,7 @@ CREATE TABLE Library (
     book_id INT,
     issue_date DATE,
     return_date DATE,
-    FOREIGN KEY (student_id) REFERENCES StudentsDetails(student_id),
+    FOREIGN KEY (student_id) REFERENCES Studentsdetails(student_id),
     FOREIGN KEY (book_id) REFERENCES Books(book_id)
 );
 
@@ -214,41 +213,8 @@ VALUES
 ('1Z2A',26, 26, '2024-08-26', '2024-09-09'),
 ('2DCE', 27, 27, '2024-08-30', '2024-09-13');
 
-CREATE TABLE Hostel (
-    hostel_id INT AUTO_INCREMENT PRIMARY KEY,
-    hostel_name VARCHAR(100),
-    hostel_type ENUM('Boys', 'Girls')
-);
-
-INSERT INTO Hostel (hostel_name, hostel_type)
-VALUES
-('Boys Hostel 1', 'Boys'),
-('Girls Hostel 1', 'Girls'),
-('Boys Hostel 2', 'Boys'),
-( 'Girls Hostel 2', 'Girls'),
-('Boys Hostel 3', 'Boys'),
-('Girls Hostel 3', 'Girls'),
-( 'Boys Hostel 4', 'Boys'),
-( 'Girls Hostel 4', 'Girls'),
-('Boys Hostel 5', 'Boys'),
-( 'Girls Hostel 5', 'Girls'),
-( 'Boys Hostel 6', 'Boys'),
-( 'Girls Hostel 6', 'Girls'),
-( 'Boys Hostel 7', 'Boys'),
-( 'Girls Hostel 7', 'Girls'),
-( 'Boys Hostel 8', 'Boys'),
-( 'Girls Hostel 8', 'Girls'),
-( 'Boys Hostel 9', 'Boys'),
-( 'Girls Hostel 9', 'Girls'),
-( 'Boys Hostel 10', 'Boys'),
-('Girls Hostel 10', 'Girls'),
-('Girls Hostel 15', 'Girls');
-
-
-ALTER TABLE StudentsDetails
-ADD FOREIGN KEY (hostel_id) REFERENCES Hostel(hostel_id);
-
-
+select * from Fees;
+select * from Books;
  -- Student Fee Status
 SELECT 
     sd.student_id,
@@ -260,26 +226,10 @@ SELECT
     f.due_date,
     f.status
 FROM 
-    StudentsDetails sd
+    Studentsdetails sd
 JOIN 
     Fees f ON sd.student_id = f.student_id
 WHERE 
     f.status IN ('Unpaid', 'Overdue')
 ORDER BY 
     f.due_date;
-
-
-
-
-
-    --  Department-wise Student Count
-    SELECT 
-    course AS Department,
-    COUNT(*) AS StudentCount
-FROM 
-    StudentsDetails
-GROUP BY 
-    course
-ORDER BY 
-    StudentCount DESC, Department;
-
