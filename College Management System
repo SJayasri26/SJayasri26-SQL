@@ -1,8 +1,28 @@
+CREATE DATABASE Studentmanagementdetails;
 
-CREATE DATABASE Studentdetails;
+USE Studentmanagementdetails;              
 
-USE Studentdetails;              
+-- Department Table
+CREATE TABLE Department (
+    department_id INT AUTO_INCREMENT PRIMARY KEY,
+    department_name VARCHAR(100) NOT NULL,
+    head_of_department VARCHAR(100) NOT NULL,
+    contact_number VARCHAR(15),
+    email VARCHAR(100)
+);
 
+INSERT INTO Department (department_name, head_of_department, contact_number, email) 
+VALUES 
+('Computer Science', 'Dr.V. Kavin', '9876543210', 'hodcs@sscet.edu.in'),
+('Information Technology', 'Dr. B.Verma', '8765432109', 'hodit@sscet.edu.in'),
+('ECE', 'Dr. C. Kavi', '7654321098', 'hodece@sscet.edu.in'),
+('Agriculture', 'Dr. D. Kumar', '6543210987', 'hodagri@sscet.edu.in'),
+('BioMedical','Dr.G.Mani','6788459830','hodbme@sscet.edu.in'),
+('AI&DS','Dr.R.John','8846579340','hodai&ds@sscet.edu.in');
+
+SELECT * FROM Department;
+
+-- Students Details Table
 CREATE TABLE Studentsdetails (
     student_id INT AUTO_INCREMENT PRIMARY KEY,
     Firstname VARCHAR(100),
@@ -10,35 +30,39 @@ CREATE TABLE Studentsdetails (
     gender ENUM('Male', 'Female'),
     age INT,
     course VARCHAR(50),
-    year_of_study INT
+    year_of_study INT,
+    department_id INT,
+    FOREIGN KEY (department_id) REFERENCES Department(department_id)
 );
 
-
-INSERT INTO Studentsdetails (Firstname, Lastname, Gender, Age, Course, Year_of_study) 
+INSERT INTO Studentsdetails (Firstname, Lastname, Gender, Age, Course, Year_of_study, department_id) 
 VALUES 
-('Gomathi','Murugan', 'Female', 21, 'Information Technology', 4),
-('Janarthini','Srinivasan', 'Female', 20, 'Information Technology', 3),
-('Moulidharan','Thirumoorthy', 'Male', 20, 'Computer Science', 3),
-('MadhanRaj','Sekar', 'Male', 21, 'Computer Science', 4),
-('Arun','Senthil', 'Male', 19, 'Computer Science', 2),
-('Jayasri','Seenu', 'Female', 20, 'Information Technology', 3),
-('Thamayanthi','Jayaprakash', 'Female', 19, 'Information Technology', 2),
-('Devisri','Sadhasivam', 'Female', 19, 'Information Technology', 2),
-('Viji','Subhramani', 'Female', 18, 'AI&DS', 1),
-('Deepa','Selvakumar', 'Female', 18, 'AI&DS', 1),
-('Dhanush','Ponnusamy', 'Male', 20, 'AI&DS',3),
-('Aarumugam','Pandi', 'Male', 20, 'AI&DS', 3),
-('IndiranKumar','SenthilKumar', 'Male', 19, 'AI&DS', 2),
-('Ravi','Chandran', 'Male', 18, 'ECE', 1),
-('Janarthanan','Rangarajan', 'Male', 20, 'Agriculture', 3),
-('Glory Joy','Christopher', 'Female', 20, 'Agriculture', 3),
-('Gowtham','Natarajan', 'Male', 19, 'Agriculture', 2),
-('Gopika','Govindhsamy', 'Female', 19, 'Agriculture', 2),
-('Anitha','Palaniyappan', 'Female', 19, 'ECE', 2),
-('Sowmiya','Manikandan', 'Female', 21, 'BioMedical', 4),
-('Swetha','VenuGopal', 'Female', 20, 'Biomedical', 3),
-('AswinRaj','Karthikeyan', 'Male', 20, 'Information Technology', 3);
+('Gomathi','Murugan', 'Female', 21, 'Information Technology', 4, 2),
+('Janarthini','Srinivasan', 'Female', 20, 'Information Technology', 3, 2),
+('Moulidharan','Thirumoorthy', 'Male', 20, 'Computer Science', 3, 1),
+('MadhanRaj','Sekar', 'Male', 21, 'Computer Science', 4, 1),
+('Arun','Senthil', 'Male', 19, 'Computer Science', 2, 1),
+('Jayasri','Seenu', 'Female', 20, 'Information Technology', 3, 2),
+('Thamayanthi','Jayaprakash', 'Female', 19, 'Information Technology', 2, 2),
+('Devisri','Sadhasivam', 'Female', 19, 'Information Technology', 2, 2),
+('Viji','Subhramani', 'Female', 18, 'AI&DS', 1, 6),
+('Deepa','Selvakumar', 'Female', 18, 'AI&DS', 1, 6),
+('Dhanush','Ponnusamy', 'Male', 20, 'AI&DS',3, 6),
+('Aarumugam','Pandi', 'Male', 20, 'AI&DS', 3, 6),
+('IndiranKumar','SenthilKumar', 'Male', 19, 'AI&DS', 2, 6),
+('Ravi','Chandran', 'Male', 18, 'ECE', 1, 3),
+('Janarthanan','Rangarajan', 'Male', 20, 'Agriculture', 3, 4),
+('Glory Joy','Christopher', 'Female', 20, 'Agriculture', 3, 4),
+('Gowtham','Natarajan', 'Male', 19, 'Agriculture', 2, 4),
+('Gopika','Govindhsamy', 'Female', 19, 'Agriculture', 2, 4),
+('Anitha','Palaniyappan', 'Female', 19, 'ECE', 2, 3),
+('Sowmiya','Manikandan', 'Female', 21, 'BioMedical', 4, 5),
+('Swetha','VenuGopal', 'Female', 20, 'Biomedical', 3, 5),
+('AswinRaj','Karthikeyan', 'Male', 20, 'Information Technology', 3, 2);
 
+SELECT * FROM Studentsdetails;
+
+-- Fees Table
 CREATE TABLE Fees (
     fee_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
@@ -49,7 +73,8 @@ CREATE TABLE Fees (
     FOREIGN KEY (student_id) REFERENCES Studentsdetails(student_id)
 );
 
-INSERT INTO Fees (student_id, amount, due_date, status, payment_date) VALUES
+INSERT INTO Fees (student_id, amount, due_date, status, payment_date) 
+VALUES
 (1, 500.00, '2024-09-01', 'Paid', '2024-08-15'),
 (2, 650.00, '2024-09-05', 'Unpaid', NULL),
 (3, 700.00, '2024-09-10', 'Paid', '2024-08-20'),
@@ -73,163 +98,292 @@ INSERT INTO Fees (student_id, amount, due_date, status, payment_date) VALUES
 (21, 450.00, '2024-09-10', 'Unpaid', NULL),
 (22, 600.00, '2024-09-25', 'Paid', '2024-09-06');
 
+SELECT * FROM Fees;
+
+-- Staff Table
 CREATE TABLE Staff (
     staff_id INT AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(100),
     lastname VARCHAR(100),
     gender ENUM('Male', 'Female'),
     age INT,
-    position VARCHAR(100),
     department VARCHAR(100),
     contact_number VARCHAR(15),
-    email VARCHAR(100)
+    email VARCHAR(100),
+    department_id INT,
+    FOREIGN KEY (department_id) REFERENCES Department(department_id)
 );
 
-
-
-INSERT INTO Staff (firstname, lastname, gender, age, position, department, contact_number, email) 
+INSERT INTO Staff (firstname, lastname, gender, age, department, contact_number, email,department_id) 
 VALUES 
-('Ravi', 'Kumar', 'Male', 45, 'Warden', 'Administration', '1234567890', 'ravi.kumar@university.edu'),
-('Anita', 'Sharma', 'Female', 38, 'Assistant Warden', 'Administration', '2345678901', 'anita.sharma@university.edu'),
-('Sunil', 'Patel', 'Male', 47, 'Security Guard', 'Security', '5678901234', 'sunil.patel@university.edu'),
-('Priya', 'Rao', 'Female', 29, 'Housekeeping Staff', 'Housekeeping', '6789012345', 'priya.rao@university.edu'),
-('Rajesh', 'Gupta', 'Male', 42, 'Maintenance Staff', 'Maintenance', '7890123456', 'rajesh.gupta@university.edu'),
-('Suman', 'Joshi', 'Female', 36, 'Nurse', 'Medical', '8901234567', 'suman.joshi@university.edu'),
-('Deepak', 'Singh', 'Male', 33, 'Accountant', 'Finance', '9012345678', 'deepak.singh@university.edu'),
-('Alok', 'Das', 'Male', 55, 'Chief Warden', 'Administration', '0123456789', 'alok.das@university.edu'),
-('Geeta', 'Reddy', 'Female', 28, 'Cook', 'Catering', '1230984567', 'geeta.reddy@university.edu'),
-('Manoj', 'Pillai', 'Male', 39, 'Security Supervisor', 'Security', '2341095678', 'manoj.pillai@university.edu'),
-('Ramesh', 'Chandra', 'Male', 44, 'Gardener', 'Maintenance', '3452106789', 'ramesh.chandra@university.edu'),
-('Swati', 'Ghosh', 'Female', 31, 'Assistant Clerk', 'Administration', '4563217890', 'swati.ghosh@university.edu'),
-('Kiran', 'Rao', 'Male', 52, 'Head Cook', 'Catering', '5674328901', 'kiran.rao@university.edu'),
-('Sneha', 'Khan', 'Female', 30, 'Housekeeping Supervisor', 'Housekeeping', '6785439012', 'sneha.khan@university.edu'),
-('Suresh', 'Patel', 'Male', 48, 'Electrician', 'Maintenance', '7896540123', 'suresh.patel@university.edu'),
-('Tina', 'Das', 'Female', 33, 'Medical Assistant', 'Medical', '8907651234', 'tina.das@university.edu'),
-('Amit', 'Bose', 'Male', 29, 'Finance Clerk', 'Finance', '9018762345', 'amit.bose@university.edu'),
-('Rita', 'Kaur', 'Female', 46, 'Warden', 'Administration', '0129873456', 'rita.kaur@university.edu'),
-('Ajay', 'Kapoor', 'Male', 43, 'Maintenance Supervisor', 'Maintenance', '1230987654', 'ajay.kapoor@university.edu'),
-('Nisha', 'Singh', 'Female', 37, 'Dietician', 'Catering', '2341098765', 'nisha.singh@university.edu'),
-('Shweta', 'Patil', 'Female', 35, 'Accountant', 'Finance', '0129876543', 'shweta.patil@university.edu');
+('Ravi', 'Kumar', 'Male', 45,  'AI&DS', '1234567890', 'ravi.kumar@university.edu',6),
+('Anita', 'Sharma', 'Female', 38, 'Computer Science', '2345678901', 'anita.sharma@university.edu',1),
+('Sunil', 'Patel', 'Male', 47,  'Biomedical', '5678901234', 'sunil.patel@university.edu',5),
+('Priya', 'Rao', 'Female', 29, 'ECE', '6789012345', 'priya.rao@university.edu',3),
+('Rajesh', 'Gupta', 'Male', 42,  'ECE', '7890123456', 'rajesh.gupta@university.edu',3),
+('Suman', 'Joshi', 'Female', 36, 'Biomedical', '8901234567', 'suman.joshi@university.edu',5),
+('Deepak', 'Singh', 'Male', 33,'Information Technology', '9012345678', 'deepak.singh@university.edu',2),
+('Alok', 'Das', 'Male', 55,  'Biomedical', '0123456789', 'alok.das@university.edu',5),
+('Geeta', 'Reddy', 'Female', 28,  'Information Technology', '1230984567', 'geeta.reddy@university.edu',2),
+('Manoj', 'Desai', 'Male', 50, 'ECE', '8900987654', 'manoj.desai@university.edu',3);
 
-CREATE TABLE Course (
+SELECT * FROM Staff;
+
+-- Exam Cell Table
+CREATE TABLE ExamCell (
+    exam_cell_id INT AUTO_INCREMENT PRIMARY KEY,
+    exam_cell_incharge VARCHAR(100),
+    department_id INT,
+    FOREIGN KEY (department_id) REFERENCES Department(department_id)
+);
+
+INSERT INTO ExamCell (exam_cell_incharge, department_id)
+VALUES 
+('Dr.V. Kavin', 1),
+('Dr. B.Verma', 2),
+('Dr. C. Kavi', 3),
+('Dr. D. Kumar', 4),
+('Dr.G.Mani', 5),
+('Dr.R.John', 6);
+
+-- Courses Table
+CREATE TABLE Courses (
     course_id INT AUTO_INCREMENT PRIMARY KEY,
     course_name VARCHAR(100) NOT NULL,
-    course_code VARCHAR(10) NOT NULL UNIQUE,
-    department VARCHAR(50) NOT NULL,
-    credits INT NOT NULL,
-    instructor VARCHAR(100) NOT NULL
+    department_id INT,
+    credits INT,
+    level VARCHAR(50),  
+    FOREIGN KEY (department_id) REFERENCES Department(department_id)
 );
 
-INSERT INTO Course (course_name, course_code, department, credits, instructor)
-VALUES
-('Introduction to Computer Science', 'CS101', 'Computer Science', 3, 'Dr. A. Sharma'),
-('Data Structures', 'CS201', 'Computer Science', 4, 'Dr. M. Gupta'),
-('Operating Systems', 'CS401', 'Computer Science', 3, 'Dr. S. Rao'),
-('Database Systems', 'CS501', 'Computer Science', 3, 'Dr. N. Singh'),
-('Artificial Intelligence', 'CS601', 'Computer Science', 4, 'Dr. A. Verma'),
-('Machine Learning', 'CS701', 'Computer Science', 4, 'Dr. V. Reddy'),
-('Discrete Mathematics', 'CS102', 'Mathematics', 3, 'Dr. P. Chandra'),
-('Linear Algebra', 'MTH201', 'Mathematics', 3, 'Dr. T. Bose'),
-('Calculus', 'MTH101', 'Mathematics', 3, 'Dr. J. Patel'),
-('Physics I', 'PHY101', 'Physics', 4, 'Dr. S. Kapoor'),
-('Physics II', 'PHY102', 'Physics', 4, 'Dr. D. Menon'),
-('Chemistry I', 'CHE101', 'Chemistry', 3, 'Dr. R. Iyer'),
-('Chemistry II', 'CHE102', 'Chemistry', 3, 'Dr. K. Sinha'),
-('Organic Chemistry', 'CHE201', 'Chemistry', 4, 'Dr. N. Yadav'),
-('Physical Chemistry', 'CHE301', 'Chemistry', 4, 'Dr. S. Das'),
-('Introduction to Economics', 'ECO101', 'Economics', 3, 'Dr. M. Mukherjee'),
-('Microeconomics', 'ECO201', 'Economics', 3, 'Dr. L. Roy'),
-('Macroeconomics', 'ECO301', 'Economics', 3, 'Dr. S. Bose'),
-('Financial Accounting', 'ACC101', 'Accounting', 4, 'Dr. P. Rao'),
-('Introduction to Psychology', 'PSY101', 'Psychology', 3, 'Dr. R. Joshi'),
-('Developmental Psychology', 'PSY201', 'Psychology', 3, 'Dr. D. Gupta');
+INSERT INTO Courses (course_name, department_id, credits,  level) 
+VALUES 
+('Database Management Systems', 1, 4, 'Undergraduate'),
+('Data Structures and Algorithms', 1, 4,  'Undergraduate'),
+('Digital Signal Processing', 3, 3,  'Undergraduate'),
+('Microcontrollers and Embedded Systems', 3, 4,  'Undergraduate'),
+('Artificial Intelligence', 6, 4,  'Postgraduate'),
+('Machine Learning', 6, 4,  'Postgraduate'),
+('Agricultural Engineering', 4, 3,  'Undergraduate'),
+('Plant Biotechnology', 4, 3,  'Undergraduate'),
+('Biomedical Instrumentation', 5, 3,  'Undergraduate'),
+('Medical Imaging', 5, 4,'Postgraduate');
 
+SELECT * FROM Courses;
+
+-- Books Table
 CREATE TABLE Books (
     book_id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255),
-    author VARCHAR(255),
-    publisher VARCHAR(255),
-    year_of_publication INT,
-    available_copies INT
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(100),
+    publication_year INT,
+    category VARCHAR(100),
+    copies_available INT
 );
 
-INSERT INTO Books (title, author, publisher, year_of_publication, available_copies)
-VALUES
-('Introduction to Algorithms', 'Thomas H. Cormen', 'MIT Press', 2009, 5),
-('Clean Code', 'Robert C. Martin', 'Prentice Hall', 2008, 10),
-('The Pragmatic Programmer', 'Andrew Hunt', 'Addison-Wesley', 1999, 7),
-('Design Patterns', 'Erich Gamma', 'Addison-Wesley', 1994, 3),
-('Code Complete', 'Steve McConnell', 'Microsoft Press', 2004, 8),
-('Refactoring', 'Martin Fowler', 'Addison-Wesley', 1999, 4),
-('The Art of Computer Programming', 'Donald Knuth', 'Addison-Wesley', 1968, 2),
-('Cracking the Coding Interview', 'Gayle Laakmann McDowell', 'CareerCup', 2015, 12),
-('Head First Design Patterns', 'Eric Freeman', 'O\'Reilly Media', 2004, 6),
-('Effective Java', 'Joshua Bloch', 'Addison-Wesley', 2008, 9),
-('You Don\'t Know JS', 'Kyle Simpson', 'O\'Reilly Media', 2015, 11),
-('JavaScript: The Good Parts', 'Douglas Crockford', 'O\'Reilly Media', 2008, 5),
-('Eloquent JavaScript', 'Marijn Haverbeke', 'No Starch Press', 2014, 10),
-('Python Crash Course', 'Eric Matthes', 'No Starch Press', 2016, 7),
-('Automate the Boring Stuff with Python', 'Al Sweigart', 'No Starch Press', 2015, 8),
-('Fluent Python', 'Luciano Ramalho', 'O\'Reilly Media', 2015, 4),
-('Learning Python', 'Mark Lutz', 'O\'Reilly Media', 2013, 6),
-('Python Cookbook', 'David Beazley', 'O\'Reilly Media', 2013, 5),
-('Compilers: Principles, Techniques, and Tools', 'Alfred V. Aho', 'Pearson', 2006, 4);
+INSERT INTO Books (title, author, publication_year, category, copies_available) 
+VALUES 
+('Database System Concepts', 'Abraham Silberschatz', 2020, 'Database', 3),
+('Introduction to Algorithms', 'Thomas H. Cormen', 2019, 'Algorithms', 5),
+('Digital Signal Processing', 'John G. Proakis', 2018, 'Signal Processing', 2),
+('Embedded Systems Design', 'Frank Vahid', 2017, 'Embedded Systems', 4),
+('Artificial Intelligence: A Modern Approach', 'Stuart Russell', 2021, 'AI', 3),
+('Machine Learning Yearning', 'Andrew Ng', 2019, 'Machine Learning', 4),
+('Principles of Agricultural Engineering', 'Michael Smith', 2015, 'Agriculture', 2),
+('Plant Biotechnology', 'Neha Sharma', 2017, 'Biotechnology', 3),
+('Biomedical Instrumentation and Measurements', 'Leslie Cromwell', 2020, 'Biomedical', 4),
+('Medical Imaging Techniques', 'Richard Szeliski', 2018, 'Medical Imaging', 2);
 
+SELECT * FROM Books;
+
+-- Library Table
 CREATE TABLE Library (
-    issue_id VARCHAR(100) PRIMARY KEY,
+    library_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT,
     book_id INT,
-    issue_date DATE,
+    issue_date DATE NOT NULL,
     return_date DATE,
+    status VARCHAR(20),
     FOREIGN KEY (student_id) REFERENCES Studentsdetails(student_id),
     FOREIGN KEY (book_id) REFERENCES Books(book_id)
 );
 
-INSERT INTO Library (Issue_ID, Student_ID, Book_ID, Issue_date, Return_date)
-VALUES
-('1A2B', 1, 1, '2024-08-01', '2024-08-15'),
-('1B2C', 2, 2, '2024-08-02', '2024-08-16'),
-('1E2F',3, 3, '2024-08-05', '2024-08-19'),
-('1F2G',4, 4, '2024-08-06', '2024-08-20'),
-('1G2H',5, 5, '2024-08-07', '2024-08-21'),
-('1H2I',6, 6, '2024-08-08', '2024-08-22'),
-('1I2J',7, 7, '2024-08-09', '2024-08-23'),
-('1J2K',8, 8, '2024-08-10', '2024-08-24'),
-('1K2L',9, 9, '2024-08-11', '2024-08-25'),
-('1L2M',12, 12, '2024-08-12', '2024-08-26'),
-('1M2N',13, 13, '2024-08-13', '2024-08-27'),
-('1N2O',14, 14, '2024-08-14', '2024-08-28'),
-('1O2P',15, 15, '2024-08-15', '2024-08-29'),
-('1P2Q',16, 16, '2024-08-16', '2024-08-30'),
-('1Q2R',17, 17, '2024-08-17', '2024-08-31'),
-('1R2S',18, 18, '2024-08-18', '2024-09-01'),
-('1S2T',19, 19, '2024-08-19', '2024-09-02'),
-('1T2U',20, 20, '2024-08-20', '2024-09-03'),
-('1U2V',21, 21, '2024-08-21', '2024-09-04'),
-('1V2W',22, 22, '2024-08-22', '2024-09-05'),
-('1W2X',23, 23, '2024-08-23', '2024-09-06'),
-('1X2Y',24, 24, '2024-08-24', '2024-09-07'),
-('1Y2Z',25, 25, '2024-08-25', '2024-09-08'),
-('1Z2A',26, 26, '2024-08-26', '2024-09-09'),
-('2DCE', 27, 27, '2024-08-30', '2024-09-13');
+INSERT INTO Library (student_id, book_id, issue_date, return_date, status) 
+VALUES 
+(1, 1, '2024-08-01', '2024-08-15', 'Returned'),
+(2, 2, '2024-08-05', NULL, 'Issued'),
+(3, 3, '2024-08-10', NULL, 'Issued'),
+(4, 4, '2024-08-12', '2024-08-26', 'Returned'),
+(5, 5, '2024-08-15', NULL, 'Issued'),
+(6, 6, '2024-08-20', '2024-09-03', 'Returned'),
+(7, 7, '2024-08-25', NULL, 'Issued'),
+(8, 8, '2024-08-28', NULL, 'Issued'),
+(9, 9, '2024-09-01', NULL, 'Issued'),
+(10, 10, '2024-09-05', NULL, 'Issued');
 
-select * from Fees;
-select * from Books;
- -- Student Fee Status
+SELECT * FROM Library;
+
+-- Hostel Table
+CREATE TABLE Hostel (
+    hostel_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT,
+    room_number VARCHAR(10) NOT NULL,
+    hostel_name VARCHAR(100),
+    fees DECIMAL(10, 2) NOT NULL,
+    payment_status VARCHAR(20),
+    FOREIGN KEY (student_id) REFERENCES Studentsdetails(student_id)
+);
+
+INSERT INTO Hostel (student_id, room_number, hostel_name, fees, payment_status) 
+VALUES 
+(4, 'A101', 'Hostel A', 5000.00, 'Paid'),
+(7, 'B201', 'Hostel B', 4500.00, 'Unpaid'),
+(9, 'C301', 'Hostel C', 4800.00, 'Paid'),
+(11, 'D401', 'Hostel D', 4700.00, 'Unpaid'),
+(13, 'E501', 'Hostel E', 4600.00, 'Paid'),
+(15, 'F601', 'Hostel F', 4900.00, 'Paid'),
+(17, 'G701', 'Hostel G', 4700.00, 'Unpaid'),
+(18, 'H801', 'Hostel H', 4500.00, 'Paid'),
+(19, 'I901', 'Hostel I', 4800.00, 'Paid'),
+(21, 'J1001', 'Hostel J', 4900.00, 'Unpaid');
+
+SELECT * FROM Hostel;
+
+-- Placement Table
+CREATE TABLE Placement (
+    placement_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT,
+    company_name VARCHAR(100) NOT NULL,
+    position VARCHAR(100),
+    package DECIMAL(10, 2),
+    status VARCHAR(20),
+    FOREIGN KEY (student_id) REFERENCES Studentsdetails(student_id)
+);
+
+INSERT INTO Placement (student_id, company_name, position, package, status) 
+VALUES 
+(1, 'TechCorp', 'Software Developer', 60000.00, 'Placed'),
+(2, 'InfoTech', 'Data Analyst', 55000.00, 'Not Placed'),
+(3, 'SoftSolutions', 'System Engineer', 58000.00, 'Placed'),
+(4, 'NetSolutions', 'Network Engineer', 56000.00, 'Not Placed'),
+(5, 'HealthCare Inc.', 'Biomedical Engineer', 62000.00, 'Placed'),
+(6, 'AgriTech Ltd.', 'Agricultural Engineer', 53000.00, 'Placed'),
+(7, 'BioMed Corp.', 'Research Scientist', 65000.00, 'Not Placed'),
+(8, 'AutoMotive', 'Mechanical Engineer', 59000.00, 'Placed'),
+(9, 'PlantTech', 'Plant Engineer', 54000.00, 'Not Placed'),
+(10, 'ElectroSoft', 'Embedded Systems Engineer', 61000.00, 'Placed');
+
+SELECT * FROM Placement;
+
+-- Transport Table
+CREATE TABLE Transport (
+    transport_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT,
+    route_number VARCHAR(10) NOT NULL,
+    pickup_point VARCHAR(100),
+    transport_fees DECIMAL(10, 2) NOT NULL,
+    payment_status VARCHAR(20),
+    FOREIGN KEY (student_id) REFERENCES Studentsdetails(student_id)
+);
+
+INSERT INTO Transport (student_id, route_number, pickup_point, transport_fees, payment_status) 
+VALUES 
+(1, 'R101', 'Station A', 1200.00, 'Paid'),
+(2, 'R102', 'Station B', 1100.00, 'Unpaid'),
+(3, 'R103', 'Station C', 1150.00, 'Paid'),
+(4, 'R104', 'Station D', 1250.00, 'Paid'),
+(5, 'R105', 'Station E', 1300.00, 'Unpaid'),
+(6, 'R106', 'Station F', 1350.00, 'Paid'),
+(7, 'R107', 'Station G', 1400.00, 'Paid'),
+(8, 'R108', 'Station H', 1450.00, 'Unpaid'),
+(9, 'R109', 'Station I', 1500.00, 'Paid'),
+(10, 'R110', 'Station J', 1550.00, 'Unpaid');
+
+SELECT * FROM Transport;
+
+-- Non-Teaching Staff Table
+CREATE TABLE NonTeachingStaff (
+    non_teaching_staff_id INT AUTO_INCREMENT PRIMARY KEY,
+    staff_name VARCHAR(100),
+    gender ENUM('Male', 'Female'),
+    age INT,
+    designation VARCHAR(50),
+    contact_number VARCHAR(15),
+    email VARCHAR(100),
+    department_id INT,
+    FOREIGN KEY (department_id) REFERENCES Department(department_id)
+);
+
+INSERT INTO NonTeachingStaff (staff_name, gender, age, designation, contact_number, email, department_id) 
+VALUES 
+('Ramesh', 'Male', 40, 'Lab Assistant', '1234567890', 'ramesh.lab@university.edu', 1),
+('Sita', 'Female', 35, 'Library Assistant', '2345678901', 'sita.lib@university.edu', 2),
+('Ganesh', 'Male', 42, 'Technician', '3456789012', 'ganesh.tech@university.edu', 3),
+('Meera', 'Female', 30, 'Clerk', '4567890123', 'meera.clerk@university.edu', 4),
+('Ravi', 'Male', 50, 'Electrician', '5678901234', 'ravi.electrician@university.edu', 5),
+('Lakshmi', 'Female', 28, 'Office Assistant', '6789012345', 'lakshmi.office@university.edu', 6);
+
+SELECT * FROM NonTeachingStaff;
+
 SELECT 
-    sd.student_id,
-    sd.Firstname,
-    sd.Lastname,
-    sd.course,
-    sd.year_of_study,
-    f.amount,
-    f.due_date,
-    f.status
+    s.student_id,
+    s.Firstname,
+    s.Lastname,
+    b.title,
+    l.issue_date,
+    l.return_date,
+    l.status
 FROM 
-    Studentsdetails sd
+    Studentsdetails s
 JOIN 
-    Fees f ON sd.student_id = f.student_id
+    Library l ON s.student_id = l.student_id
+JOIN 
+    Books b ON l.book_id = b.book_id
 WHERE 
-    f.status IN ('Unpaid', 'Overdue')
-ORDER BY 
-    f.due_date;
+    l.status = 'Issued';
+    
+    
+    SELECT 
+    s.student_id,
+    s.Firstname,
+    s.Lastname,
+    f.amount,
+    f.status,
+    f.payment_date
+FROM 
+    Studentsdetails s
+JOIN 
+    Fees f ON s.student_id = f.student_id;
+
+
+SELECT 
+    s.student_id,
+    s.Firstname,
+    s.Lastname,
+    p.company_name,
+    p.position,
+    p.package,
+    p.status
+FROM 
+    Studentsdetails s
+JOIN 
+    Placement p ON s.student_id = p.student_id
+WHERE 
+    p.status = 'Placed';
+    
+    
+    SELECT 
+    s.student_id,
+    s.Firstname,
+    s.Lastname,
+    d.department_name,
+    c.course_name
+FROM 
+    Studentsdetails s
+JOIN 
+    Department d ON s.department_id = d.department_id
+JOIN 
+    Courses c ON c.department_id = d.department_id;
+
+
+
