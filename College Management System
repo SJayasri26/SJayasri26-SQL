@@ -342,7 +342,7 @@ JOIN
 WHERE 
     l.status = 'Issued';
     
-    
+----- Student details with fees details    
     SELECT 
     s.student_id,
     s.Firstname,
@@ -354,7 +354,9 @@ FROM
     Studentsdetails s
 JOIN 
     Fees f ON s.student_id = f.student_id;
-
+    
+    
+---- Student details with placed student details
 
 SELECT 
     s.student_id,
@@ -371,7 +373,7 @@ JOIN
 WHERE 
     p.status = 'Placed';
     
-    
+ ---- student details with cooresponding department and course details   
     SELECT 
     s.student_id,
     s.Firstname,
@@ -384,6 +386,21 @@ JOIN
     Department d ON s.department_id = d.department_id
 JOIN 
     Courses c ON c.department_id = d.department_id;
-
-
+    
+    
+    
+----- Student details with department and fees
+Select 
+s.student_id,
+s.Firstname,
+s.Lastname,
+d.department_name,
+f.amount,
+f.status
+from
+studentsdetails s 
+join 
+department d on s.department_id=d.department_id
+join
+fees f on s.student_id = f.student_id;
 
